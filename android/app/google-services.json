@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "951531659794",
+    "project_id": "liveasy-f79db",
+    "storage_bucket": "liveasy-f79db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951531659794:android:4516a2a6b4ed6cad28eecb",
+        "android_client_info": {
+          "package_name": "com.dhairya.liveasy_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVyPhgY2XSnsabhxK0z4hUyyikunIGWoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951531659794:android:39c666bed608efc928eecb",
+        "android_client_info": {
+          "package_name": "com.dhairya.liveasy_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVyPhgY2XSnsabhxK0z4hUyyikunIGWoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
