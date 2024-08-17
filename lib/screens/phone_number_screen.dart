@@ -170,6 +170,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     Button(
                       title: 'CONTINUE',
                       onPressed: () {
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => OtpInputScreen(userPhoneNumber: userPhoneNumber, verificationId: _verificationId)));
                         _verifyPhoneNumber();
                       },
                       child: _isLoading
@@ -186,15 +187,6 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
 
 
 

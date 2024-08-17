@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:liveasy_app/screens/select_profile.dart';
@@ -54,16 +55,55 @@ class _OtpInputScreenState extends State<OtpInputScreen> {
     }
   }
 
-  void _navigateToNextScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const SelectProfile_Screen()), // Navigate to the next screen
+  Future<void> _verifyPhoneNumber() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await _auth.verifyPhoneNumber(
+      phoneNumber: widget.userPhoneNumber,
+      //1 Verify phone number
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        // Auto-retrieval or instant verification
+        await _auth.signInWithCredential(credential);
+        setState(() {
+          _isLoading = false;
+        });
+        _showSnackBar('Phone number automatically verified');
+        // _navigateToNextScreen();
+      },
+      //2 verification failed
+      verificationFailed: (FirebaseAuthException e) {
+        setState(() {
+          _isLoading = false;
+        });
+        _showSnackBar('Verification failed: ${e.message}');
+      },
+      //3 code sent
+      codeSent: (String verificationId, int? resendToken) {
+        setState(() {
+          _isLoading = false;
+        });
+        _showSnackBar('OTP resent to your phone');
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        setState(() {
+          verificationId = widget.verificationId;
+        });
+      },
     );
   }
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
+    );
+  }
+
+  void _navigateToNextScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const SelectProfile_Screen()), // Navigate to the next screen
     );
   }
 
@@ -133,23 +173,52 @@ class _OtpInputScreenState extends State<OtpInputScreen> {
                 },
               ),
               const SizedBox(height: 20.0),
+
               RichText(
                 textAlign: TextAlign.center,
-                text: const TextSpan(
+                text: TextSpan(
                   style: kSubHeadingTextStyle,
                   children: [
-                    TextSpan(
+                    const TextSpan(
                       text: 'Didn’t receive the code? ',
                     ),
                     TextSpan(
                       text: 'Request Again',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          _verifyPhoneNumber();
+                        },
                     ),
                   ],
                 ),
               ),
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Text(
+              //       'Didn’t receive the code?',
+              //       style: kSubHeadingTextStyle,
+              //     ),
+              //     TextButton(
+              //       onPressed: () {
+              //         _verifyPhoneNumber();
+              //       },
+              //       child: Text(
+              //           'Request Again',
+              //           style: TextStyle(
+              //             fontFamily: 'Roboto',
+              //             fontSize: 14.0,
+              //             fontWeight: FontWeight.bold,
+              //             color: Color.fromRGBO(106, 108, 123, 1),
+              //           ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
 
               SizedBox(height: 20.0),
               Button(
